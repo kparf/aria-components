@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import styled from "@emotion/styled"
+
+
+import { Accordion, Section as AccordionSection } from "./components/accordion"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <AppCotent>
+      <Accordion>
+        <AccordionSection
+          title="Personal Information"
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          <form>
+            <label>
+              Name: <input name="email"/>
+            </label>
+            <br />
+            <label>
+              Email: <input name="email"/>
+            </label>
+          </form>
+        </AccordionSection>
+        <AccordionSection
+          title="Personal Information 2"
+        >
+          <form>
+            <label>
+              Name: <input name="email"/>
+            </label>
+            <br />
+            <label>
+              Email: <input name="email"/>
+            </label>
+          </form>
+        </AccordionSection>
+      </Accordion>
+    </AppCotent>
   );
 }
+
+const AppCotent = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+`
 
 export default App;
