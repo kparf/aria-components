@@ -1,6 +1,7 @@
 import React from 'react';
 import { Accordion, Section, AccordionProps } from "."
 import { mount } from 'enzyme'
+import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 
 
 const getNewAccordion = () => (
@@ -52,15 +53,29 @@ const getNewAccordion = () => (
 
 describe("Accordion Accessibility Features", () => {
   it("Down Arrow work", () => {
-    const wrapper = mount(getNewAccordion())
+    render(getNewAccordion())
+    const firstHeaderButton = screen.getByText("Personal Information")
+    const secondHeaderButton = screen.getByText("Personal Information 2")
+
+    firstHeaderButton.focus()
+    expect(firstHeaderButton).toHaveFocus()
+    fireEvent.keyDown(firstHeaderButton, { key: "ArrowDown" })
+    expect(secondHeaderButton).toHaveFocus()
   })
   it("Up Arrow work", () => {
+    render(getNewAccordion())
+    const firstHeaderButton = screen.getByText("Personal Information")
+    const secondHeaderButton = screen.getByText("Personal Information 2")
+
+    secondHeaderButton.focus()
+    expect(secondHeaderButton).toHaveFocus()
+    fireEvent.keyDown(secondHeaderButton, { key: "ArrowUp" })
+    expect(firstHeaderButton).toHaveFocus()
+  })
+  it.skip("Home work", () => {
     const wrapper = mount(getNewAccordion())
   })
-  it("Home work", () => {
-    const wrapper = mount(getNewAccordion())
-  })
-  it("End work", () => {
+  it.skip("End work", () => {
     const wrapper = mount(getNewAccordion())
   })
 })
