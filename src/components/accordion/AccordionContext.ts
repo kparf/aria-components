@@ -8,6 +8,8 @@ type AccordionContextProps = {
   onBlur: (setOpen: SetOpenFn) => void
   onNextSection: (setOpen: SetOpenFn) => void
   onPreviousSection: (setOpen: SetOpenFn) => void
+  onFirstSection: () => void
+  onLastSection: () => void
 }
 export const AccordionContext = React.createContext<AccordionContextProps>({
   register: () => false,
@@ -16,5 +18,7 @@ export const AccordionContext = React.createContext<AccordionContextProps>({
   onFocus: () => {},
   onBlur: () => {},
   onNextSection: () => {},
-  onPreviousSection: () => {}
+  onPreviousSection: () => {},
+  onFirstSection: () => {},
+  onLastSection: () => {},
 })

@@ -11,6 +11,8 @@ export const useSectionOpen = (defaultOpen: boolean) => {
     onBlur,
     onNextSection,
     onPreviousSection,
+    onFirstSection,
+    onLastSection,
   } = useContext(AccordionContext)
 
   const btnRef = useRef<HTMLButtonElement>(null)
@@ -37,6 +39,12 @@ export const useSectionOpen = (defaultOpen: boolean) => {
     }
     if ("ArrowUp" === e.key) {
       onPreviousSection(setOpen)
+    }
+    if ("Home" === e.key) {
+      onFirstSection()
+    }
+    if ("End" === e.key) {
+      onLastSection()
     }
   }, [onNextSection, onPreviousSection, setOpen])
 

@@ -20,9 +20,11 @@ const collapseOtherSections = (
   }
 })
 
+type ButtonMap = Map<Function, [React.RefObject<HTMLButtonElement>, boolean]>
+
 export const Accordion: React.FC<Props> = ({ children, className }) => {
   const accordionRef = useRef<HTMLDivElement>(null)
-  const ref = useRef<Map<Function, [React.RefObject<HTMLButtonElement>, boolean]>>(new Map())
+  const ref = useRef<ButtonMap>(new Map())
   const {
     onFocus,
     onBlur,
@@ -32,35 +34,6 @@ export const Accordion: React.FC<Props> = ({ children, className }) => {
   const register = useCallback((setOpen: Function, btnRef: React.RefObject<HTMLButtonElement>, defaultOpen: boolean) => {
     ref.current.set(setOpen, [btnRef, defaultOpen])
     return defaultOpen
-  }, [])
-
-  const onNextSection = useCallback((setOpen: Function) => {
-    const keyList = Array.from(ref.current.keys())
-    const nextSetOpen = keyList[keyList.indexOf(setOpen) + 1]
-    if (nextSetOpen) {
-      toggle(nextSetOpen, true)
-      const val = ref.current.get(nextSetOpen)
-      if (val) {
-        const [btnRef] = val
-        btnRef.current?.focus()
-      }
-    }
-  }, [])
-  const onPreviousSection = useCallback((setOpen: Function) => {
-    const keyList = Array.from(ref.current.keys())
-    const prevSetOpen = keyList[keyList.indexOf(setOpen) - 1]
-    if (prevSetOpen) {
-      toggle(prevSetOpen, true)
-      const val = ref.current.get(prevSetOpen)
-      if (val) {
-        const [btnRef] = val
-        btnRef.current?.focus()
-      }
-    }
-  }, [])
-
-  const unregister = useCallback((setOpen: Function) => {
-    ref.current.delete(setOpen)
   }, [])
 
   const toggle = useCallback((setOpen: Function, isForceOpen?: boolean) => {
@@ -76,6 +49,50 @@ export const Accordion: React.FC<Props> = ({ children, className }) => {
     }
   }, [])
 
+  const changeFocus = (key: Function, buttonMap: ButtonMap) => {
+    toggle(key, true)
+    const val = buttonMap.get(key)
+    if (val) {
+      const [btnRef] = val
+      btnRef.current?.focus()
+    }
+  }
+
+  const onFirstSection = useCallback(() => {
+    const FIRST = 0;
+    const firstSetOpen = Array.from(ref.current.keys())[FIRST]
+    if (firstSetOpen) {
+      changeFocus(firstSetOpen, ref.current)
+    }
+  }, [])
+
+  const onLastSection = useCallback(() => {
+    const keyList = Array.from(ref.current.keys())
+    const lastSetOpen = keyList[keyList.length - 1]
+    if (lastSetOpen) {
+      changeFocus(lastSetOpen, ref.current)
+    }
+  }, [])
+
+  const onNextSection = useCallback((setOpen: Function) => {
+    const keyList = Array.from(ref.current.keys())
+    const nextSetOpen = keyList[keyList.indexOf(setOpen) + 1]
+    if (nextSetOpen) {
+      changeFocus(nextSetOpen, ref.current)
+    }
+  }, [])
+  const onPreviousSection = useCallback((setOpen: Function) => {
+    const keyList = Array.from(ref.current.keys())
+    const prevSetOpen = keyList[keyList.indexOf(setOpen) - 1]
+    if (prevSetOpen) {
+      changeFocus(prevSetOpen, ref.current)
+    }
+  }, [])
+
+  const unregister = useCallback((setOpen: Function) => {
+    ref.current.delete(setOpen)
+  }, [])
+
   return (
     <AccordionContext.Provider value={{
       register,
@@ -85,6 +102,8 @@ export const Accordion: React.FC<Props> = ({ children, className }) => {
       onBlur,
       onNextSection,
       onPreviousSection,
+      onFirstSection,
+      onLastSection,
     }}>
       <Container
         isFocused={isFocused}

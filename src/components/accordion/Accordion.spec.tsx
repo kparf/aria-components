@@ -72,10 +72,24 @@ describe("Accordion Accessibility Features", () => {
     fireEvent.keyDown(secondHeaderButton, { key: "ArrowUp" })
     expect(firstHeaderButton).toHaveFocus()
   })
-  it.skip("Home work", () => {
-    const wrapper = mount(getNewAccordion())
+  it("Home work", () => {
+    render(getNewAccordion())
+    const thirdHeaderButton = screen.getByText("Personal Information 3")
+    const secondHeaderButton = screen.getByText("Personal Information 2")
+
+    secondHeaderButton.focus()
+    expect(secondHeaderButton).toHaveFocus()
+    fireEvent.keyDown(secondHeaderButton, { key: "End" })
+    expect(thirdHeaderButton).toHaveFocus()
   })
-  it.skip("End work", () => {
-    const wrapper = mount(getNewAccordion())
+  it("End work", () => {
+    render(getNewAccordion())
+    const firstHeaderButton = screen.getByText("Personal Information")
+    const secondHeaderButton = screen.getByText("Personal Information 2")
+
+    secondHeaderButton.focus()
+    expect(secondHeaderButton).toHaveFocus()
+    fireEvent.keyDown(secondHeaderButton, { key: "Home" })
+    expect(firstHeaderButton).toHaveFocus()
   })
 })
