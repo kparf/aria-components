@@ -1,7 +1,6 @@
 import React from 'react';
-import { Accordion, Section, AccordionProps } from "."
-import { mount } from 'enzyme'
-import { render, fireEvent, waitFor, screen } from '@testing-library/react'
+import { Accordion, Section } from "."
+import { render, fireEvent, screen } from '@testing-library/react'
 
 
 const getNewAccordion = () => (

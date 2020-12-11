@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, ReactElement } from "react"
+import React, { useRef, useCallback } from "react"
 import styled from "@emotion/styled"
 import { Section } from "./Section"
 import { AccordionContext } from "./AccordionContext"
