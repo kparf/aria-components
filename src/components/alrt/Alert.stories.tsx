@@ -1,4 +1,5 @@
-import React, { ReactElement, useState, ChangeEvent } from "react"
+import React, { useState, useCallback, FormEvent, useRef } from "react"
+import styled from "@emotion/styled"
 import { Alert } from "./Alert"
 import { Story, Meta } from '@storybook/react/types-6-0';
 
@@ -13,20 +14,36 @@ type Props = {
 }
 const AlertContainer: React.FC<Props> = ({ AlertComponent }) => {
   const [alertText, setAlertText] = useState<string>("")
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const inputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setAlertText(e.target.value)
-  }
+  const sumbitHandler = useCallback((e: FormEvent) => {
+    e.preventDefault()
+    const value = inputRef.current?.value
+    if (value) {
+      setAlertText(value)
+    }
+  }, [])
   
   return (
     <div>
-      <input onChange={inputChange}/>
+      <Form onSubmit={sumbitHandler}>
+        <input ref={inputRef}/>
+        <button>Alert!</button>
+      </Form>
       <AlertComponent>
         {alertText}
       </AlertComponent>
     </div>
   )
 }
+
+const Form = styled.form`
+  display: flex;
+  margin-bottom: 1em;
+  & input {
+    margin-right: 1em;
+  }
+`
 
 const Template: Story = (args) => (<AlertContainer AlertComponent={Alert}/>)
 
